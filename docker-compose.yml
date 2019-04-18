@@ -1,0 +1,31 @@
+version: "3.1"
+
+services:
+  gowebserver:
+    build: .
+    container_name: gowebserver
+    ports:
+      - "1234:1234"
+    depends_on:
+      - mysqlserver
+  
+  mysqlserver:
+    image: mysql:5.7
+    container_name: mysqlserver
+    ports:
+      - "3350:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    environment:
+     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+     - MYSQL_DATABASE=${MYSQL_DATABASE}
+     - MYSQL_USER=${MYSQL_USER}
+     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        
+volumes:
+  mysqldata:
+
+networks:
+  default:
+    external:
+      name: webproxy
